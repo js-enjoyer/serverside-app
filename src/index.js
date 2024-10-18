@@ -8,8 +8,7 @@ app.engine('hbs', handlebars.engine( { extname: 'hbs' } ))
 app.set('view engine', 'hbs')
 app.set('views', './src/views')
 
-app.use('/static', express.static('./src/static'))
-app.use('/static/img', express.static('static'))
+app.use(express.static('public'))
 
 app.get('/', (req, res) => {
     res.render('home')
