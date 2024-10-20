@@ -20,10 +20,19 @@ const create = async (req) => {
 
 }
 
+const details = async (req) => {
+    const movieId = req.params.movieId;
+
+    const movies = await dataServices.getMoviesData();
+    const currentMovie = movieUtils.findMovie(movies, movieId)
+    
+    return currentMovie;
+}
 
 
 
 export default {
     getAll,
-    create
+    create,
+    details
 };

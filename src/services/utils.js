@@ -34,7 +34,23 @@ async function getFormData(req) {
     return [fields, file]
 }
 
+function findMovie(movies, movieId) {
+    const currentMovie = movies.find(movie => movie.id === movieId)
+
+    currentMovie.viewRating = showStars(currentMovie)
+
+    return currentMovie
+}
+
+function showStars(currentMovie) {
+    if(!Number.isInteger(currentMovie.rating)) {
+        return 'n\\a'
+    }
+    return '&#x2605;'.repeat(n)
+}
+
 export default {
     updateCollection,
-    getFormData
+    getFormData,
+    findMovie
 }
