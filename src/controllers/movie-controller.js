@@ -8,7 +8,7 @@ const router = express.Router();
 router.use(express.urlencoded( {extended : false} ));
 
 router.get('/create', (req, res) => {
-    res.render('create');
+    res.render('movie/create');
 });
 
 router.post('/create', async (req, res) => {

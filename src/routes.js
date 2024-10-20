@@ -5,6 +5,6 @@ import createController from './controllers/movie-controller.js'
 const router = Router();
 
 router.use(homeController);
-router.use(createController)
+router.use('/movie', createController)
 
 export default router;
