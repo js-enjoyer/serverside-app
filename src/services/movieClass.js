@@ -4,9 +4,9 @@ class CreateMovie {
         this.title = title;
         this.genre = genre;
         this.director = director;
-        this.year = year;
+        this.year = Number(year);
         this.imageUrl = imageUrl;
-        this.rating = rating;
+        this.rating = Number(rating);
         this.description = description;
     }
 }

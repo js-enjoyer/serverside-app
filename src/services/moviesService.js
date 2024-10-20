@@ -2,10 +2,10 @@ import formidable from 'formidable';
 import path from 'path'
 import fs from 'fs/promises'
 
-import movieData from '../data/movieData.js';
+import dataServices from '../data/movieData.js';
 import CreateMovie from './movieClass.js';
 
-const getAll = () => movieData.getMovies();
+const getAll = () => dataServices.getMoviesData();
 
 const parseFormData = async function(req) {
     const form = formidable();
@@ -22,7 +22,7 @@ const parseFormData = async function(req) {
     //We download the image to our img folder
     await downloadImage(file);
     //We parse the whole data from the form to the database
-    await parseToDataBase(fields, file);
+    await addMovie(fields, file.originalFilename);
     
 }
 
@@ -32,32 +32,22 @@ async function downloadImage(file) {
     await fs.copyFile(file.filepath, newPath);
 }
 
-async function parseToDataBase(fields, file) {
-    const jsonPath = path.resolve('./src/db.json');
-
-    const moviesData = await getJsonData(jsonPath);
-    console.log(fields);
-    addMovie(fields, moviesData, file)
-    //Stringifying the data and specifying we want 2 spaces after each input with the third argument
-    const jsonMoviesData = JSON.stringify(moviesData, null, 2);
-
-    await fs.writeFile(jsonPath, jsonMoviesData, { encoding: 'utf-8' });
-}
-
-async function getJsonData(path) {
-    let jsonData = await fs.readFile(path, { encoding: 'utf-8'});
-    let data = JSON.parse(jsonData);
-
-    return data
-}
-
-function addMovie({title, genre, director, year, rating, description}, moviesData, file) {
-    const id = moviesData.movies.length + 1;
-    const imageUrl = `./static/img/${file.originalFilename}`;
-
-    const newMovie = new CreateMovie(id, title, genre, director, year, imageUrl, rating, description)
-
+async function addMovie(fields, fileName) {
+    const moviesData = await dataServices.getJsonData();
+    
+    const newMovie = createMovie(fields, moviesData, fileName)
     moviesData.movies.push(newMovie);
+    //We call a function that puts the new data into the database
+    await dataServices.parseToDatabase(moviesData)
+}
+
+function createMovie({title, genre, director, year, rating, description}, moviesData, fileName) {
+    const id = moviesData.movies.length + 1;
+    const imageUrl = `./static/img/${fileName}`;
+
+    const newMovie = new CreateMovie(id, title, genre, director, year, imageUrl, rating, description);
+
+    return newMovie;
 }
 
 export default {

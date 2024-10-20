@@ -1,20 +1,31 @@
 import fs from 'fs/promises';
 import path from 'path';
 
-async function getData() {
-    const dbPath = path.resolve('./src/db.json')
+const dbPath = path.resolve('./src/db.json')
+
+async function getJsonData() {
     const data = await fs.readFile(dbPath);
     const db = JSON.parse(data);
 
-    return db.movies;
+    return db;
 }
 
-async function getMovies() {
-    const movies = await getData();
+async function getMoviesData() {
+    const jsonData = await getJsonData();
 
-    return movies;
+    return jsonData.movies;
 }
+
+async function parseToDatabase(moviesData) {
+    //Stringifying the data and specifying we want 2 spaces after each input with the third argument
+    const jsonMoviesData = JSON.stringify(moviesData, null, 2);
+
+    await fs.writeFile(dbPath, jsonMoviesData, { encoding: 'utf-8' });
+}
+
 
 export default {
-    getMovies,
+    getMoviesData,
+    getJsonData,
+    parseToDatabase
 }
