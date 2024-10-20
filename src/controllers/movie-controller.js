@@ -12,7 +12,7 @@ router.get('/create', (req, res) => {
 });
 
 router.post('/create', async (req, res) => {
-    await moviesService.parseFormData(req);
+    await moviesService.create(req);
 
     res.redirect('/');
 });

@@ -23,9 +23,16 @@ async function parseToDatabase(moviesData) {
     await fs.writeFile(dbPath, jsonMoviesData, { encoding: 'utf-8' });
 }
 
+async function downloadImage(file) {
+    let newPath = path.resolve(`./public/static/img/${file.originalFilename}`);
+    
+    await fs.copyFile(file.filepath, newPath);
+}
+
 
 export default {
     getMoviesData,
     getJsonData,
-    parseToDatabase
+    parseToDatabase,
+    downloadImage
 }
