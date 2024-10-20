@@ -17,7 +17,7 @@ async function getMoviesData() {
 }
 
 async function parseToDatabase(moviesData) {
-    //Stringifying the data and specifying we want 2 spaces after each input with the third argument
+    //Stringifying the data and specifying we want 2 spaces after ineach put with the third argument
     const jsonMoviesData = JSON.stringify(moviesData, null, 2);
 
     await fs.writeFile(dbPath, jsonMoviesData, { encoding: 'utf-8' });

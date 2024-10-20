@@ -1,9 +1,10 @@
 import formidable from 'formidable';
+import uniqid from 'uniqid'
 
 import CreateMovie from "./movieClass.js";
 
 function updateCollection(fields, fileName, moviesData) {
-    const newId = moviesData.movies.length + 1;
+    const newId = uniqid()
     const imageUrl = `./static/img/${fileName}`;
 
     const newMovie = createMovie(fields, imageUrl, newId)
